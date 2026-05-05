@@ -93,8 +93,8 @@ PORT=5000
 
 **Prity Kumari**
 
-* 🔗 GitHub: https://github.com/your-username
-* 🔗 LinkedIn: https://linkedin.com/in/your-profile
+* 🔗 GitHub: https://github.com/pritykumari555
+* 🔗 LinkedIn: https://linkedin.com/in/https://www.linkedin.com/in/prity-kumari-6b701a34a/
 
 ---
 
