@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import BASE_URL from "../config";
 
 function MCQ() {
   const [questions, setQuestions] = useState([]);
@@ -10,7 +11,6 @@ function MCQ() {
   const { company } = useParams();
   const navigate = useNavigate();
 
-  // ✅ Safe percentage calculation
   const percent = questions.length
     ? (score / questions.length) * 100
     : 0;
@@ -18,7 +18,7 @@ function MCQ() {
   const ispass = percent >= 60;
 
   useEffect(() => {
-    fetch(`http://localhost:5000/question/${company}`)
+    fetch(`${BASE_URL}/question/${company}`)
       .then((res) => res.json())
       .then((data) => setQuestions(data));
   }, [company]);
@@ -31,7 +31,6 @@ function MCQ() {
   };
 
   const handleSubmit = () => {
-    // ✅ Prevent empty submission
     if (Object.keys(answers).length !== questions.length) {
       alert("Please answer all questions");
       return;
@@ -129,7 +128,6 @@ const styles = {
     alignItems: "center",
     fontFamily: "sans-serif",
   },
-
   card: {
     backgroundColor: "#1e293b",
     padding: "30px",
@@ -137,38 +135,32 @@ const styles = {
     width: "500px",
     boxShadow: "0 0 20px rgba(0,0,0,0.5)",
   },
-
   title: {
     textAlign: "center",
     color: "white",
     marginBottom: "20px",
   },
-
   loading: {
     color: "white",
     textAlign: "center",
   },
-
   questionBox: {
     marginBottom: "20px",
     padding: "15px",
     backgroundColor: "#334155",
     borderRadius: "8px",
   },
-
   question: {
     color: "white",
     marginBottom: "10px",
     fontWeight: "bold",
   },
-
   option: {
     display: "block",
     color: "#e2e8f0",
     marginBottom: "8px",
     cursor: "pointer",
   },
-
   button: {
     width: "100%",
     padding: "10px",
@@ -179,12 +171,10 @@ const styles = {
     cursor: "pointer",
     marginTop: "10px",
   },
-
   resultBox: {
     textAlign: "center",
     color: "white",
   },
-
   score: {
     fontSize: "20px",
     marginTop: "10px",

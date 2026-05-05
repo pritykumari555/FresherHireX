@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import BASE_URL from "../config";
 
 function ApplyList() {
   const [name, setname] = useState("");
@@ -14,7 +15,7 @@ function ApplyList() {
   const handlSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/apply", {
+    const res = await fetch(`${BASE_URL}/apply`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

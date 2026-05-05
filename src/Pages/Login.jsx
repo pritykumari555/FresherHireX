@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Component/Navbar";
+import BASE_URL from "../config";
 
 function Login() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/login", {
+      const res = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -28,13 +29,10 @@ function Login() {
         setErrorMsg("❌ Wrong password!");
       } 
       else {
-        // ✅ SAVE USER
         localStorage.setItem(
           "user",
           JSON.stringify(data.user || { email })
         );
-
-        // ✅ GO TO JOBLIST
         navigate("/joblist");
       }
 

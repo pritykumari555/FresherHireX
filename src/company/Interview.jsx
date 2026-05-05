@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import Editor from "@monaco-editor/react";
+import BASE_URL from "../config";
 
 function Interview() {
   const { company } = useParams();
@@ -10,16 +11,12 @@ function Interview() {
   const meetingRef = useRef(null);
   const zpRef = useRef(null);
 
-  // ================= STATE =================
   const [answer, setAnswer] = useState("");
   const [code, setCode] = useState("// Write your code here...");
   const [language, setLanguage] = useState("javascript");
-
   const [output, setOutput] = useState("");
   const [running, setRunning] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // 🔥 ROUNDS
   const [round, setRound] = useState(1);
   const [currentQ, setCurrentQ] = useState(0);
   const [hrAnswers, setHrAnswers] = useState([]);
@@ -31,13 +28,12 @@ function Interview() {
     "Where do you see yourself in 5 years?"
   ];
 
-  // ================= VIDEO =================
   useEffect(() => {
     const startMeeting = async () => {
       if (!meetingRef.current) return;
 
       const appID = 659154371;
-      const serverSecret = "YOUR_SECRET"; // ⚠️ Replace
+      const serverSecret = "YOUR_SECRET";
 
       const roomID = company;
       const userID = Date.now().toString();
@@ -69,13 +65,12 @@ function Interview() {
     };
   }, [company]);
 
-  // ================= RUN CODE =================
   const runCode = async () => {
     setRunning(true);
     setOutput("Running...");
 
     try {
-      const res = await fetch("http://localhost:5000/code/run", {
+      const res = await fetch(`${BASE_URL}/code/run`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -93,7 +88,6 @@ function Interview() {
     }
   };
 
-  // ================= HR =================
   const handleHRAnswer = (value) => {
     const updated = [...hrAnswers];
     updated[currentQ] = value;
@@ -108,7 +102,6 @@ function Interview() {
     }
   };
 
-  // ================= SUBMIT =================
   const handleSubmit = async () => {
     if (round === 1) {
       setRound(2);
@@ -118,7 +111,7 @@ function Interview() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/ai/analyze", {
+      const res = await fetch(`${BASE_URL}/ai/analyze`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -142,7 +135,6 @@ function Interview() {
     }
   };
 
-  // ================= UI =================
   return (
     <div style={{
       minHeight: "100vh",
@@ -150,8 +142,6 @@ function Interview() {
       color: "white",
       display: "flex"
     }}>
-
-      {/* LEFT SIDE */}
       <div style={{
         flex: 3,
         padding: "25px",
@@ -159,13 +149,11 @@ function Interview() {
         flexDirection: "column",
         gap: "15px"
       }}>
-
         <h2>🎤 {company} Interview</h2>
         <p style={{ color: "#94a3b8" }}>
           {round === 1 ? "Coding Round" : "HR Round"}
         </p>
 
-        {/* CODING ROUND */}
         {round === 1 && (
           <>
             <textarea
@@ -236,7 +224,6 @@ function Interview() {
           </>
         )}
 
-        {/* HR ROUND */}
         {round === 2 && (
           <div style={{
             background: "#1e293b",
@@ -244,7 +231,6 @@ function Interview() {
             borderRadius: "12px"
           }}>
             <h3>Question {currentQ + 1} of {hrQuestions.length}</h3>
-
             <p>{hrQuestions[currentQ]}</p>
 
             <textarea
@@ -277,7 +263,6 @@ function Interview() {
         {loading && <p>⏳ AI analyzing...</p>}
       </div>
 
-      {/* RIGHT SIDE (CAMERA) */}
       <div style={{
         flex: 1,
         padding: "20px",

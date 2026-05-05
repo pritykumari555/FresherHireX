@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Component/Navbar";
+import BASE_URL from "../config";
 
 function Signup() {
   const navigate = useNavigate();
@@ -14,13 +15,12 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/signup", {
+      const res = await fetch(`${BASE_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password })
       });
 
-      // ⚠️ FIX: no unused variable warning
       await res.json();
 
       if (res.status === 400) {
@@ -29,12 +29,10 @@ function Signup() {
       }
 
       if (res.ok) {
-        // save user session
         localStorage.setItem(
           "user",
           JSON.stringify({ name, email })
         );
-
         navigate("/joblist");
       }
 
@@ -45,7 +43,6 @@ function Signup() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f1f5f9" }}>
-
       <Navbar />
 
       <div style={{
@@ -71,7 +68,6 @@ function Signup() {
           )}
 
           <form onSubmit={handleSubmit}>
-
             <input
               type="text"
               placeholder="Full Name"
@@ -113,7 +109,6 @@ function Signup() {
             >
               Create Account →
             </button>
-
           </form>
 
           <p style={{ marginTop: "15px" }}>
